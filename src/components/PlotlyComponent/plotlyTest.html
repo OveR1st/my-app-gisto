@@ -1,0 +1,47 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Load plotly.js into the DOM -->
+        <script src='https://cdn.plot.ly/plotly-2.16.1.min.js'></script>
+    </head>
+    
+    <body>
+        <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+    </body>
+<script>
+    function gaussianRand() {
+  var rand = 0;
+  for (var i = 0; i < 6; i += 1) {
+    rand += Math.random();
+  }
+  return (rand / 6)-0.5;
+}
+
+var X = [],
+    Y = [],
+    n = 100000,
+    i;
+
+for (i = 0; i < n; i += 1) {
+  X.push(gaussianRand());
+  Y.push(gaussianRand());
+}
+
+var data = [{
+	type: "scattergl",
+    mode: "markers",
+    marker: {
+		color : 'rgb(152, 0, 0)',
+		line: {
+			width: 1,
+			color: 'rgb(0,0,0)'}
+	},
+    x: X,
+    y: Y
+}]
+
+Plotly.newPlot('myDiv', data)
+
+</script>
+</html>
