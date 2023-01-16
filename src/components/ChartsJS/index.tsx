@@ -14,7 +14,7 @@ import {
 
 import type { ChartData, ChartOptions } from 'chart.js'
 
-import { Line } from 'react-chartjs-2'
+import { Line, Scatter } from 'react-chartjs-2'
 
 import { enGB } from 'date-fns/locale'
 // import 'chartjs-plugin-zoom'
@@ -52,42 +52,12 @@ const Histogram = () => {
 		}
 	}
 
-	// const scales = {
-	// 	x: {
-	// 		position: 'bottom',
-	// 		type: 'time',
-	// 		ticks: {
-	// 			autoSkip: true,
-	// 			autoSkipPadding: 50,
-	// 			maxRotation: 0,
-	// 		},
-	// 		time: {
-	// 			displayFormats: {
-	// 				hour: 'HH:mm',
-	// 				minute: 'HH:mm',
-	// 				second: 'HH:mm:ss',
-	// 			},
-	// 		},
-	// 	},
-	// 	y: {
-	// 		position: 'left',
-	// 		ticks: {
-	// 			callback: (val: any, index: any, ticks: any) =>
-	// 				index === 0 || index === ticks.length - 1 ? null : val,
-	// 		},
-	// 		grid: {
-	// 			borderColor: 'blue',
-	// 			color: 'rgba( 0, 0, 0, 0.1)',
-	// 		},
-	// 		title: {
-	// 			display: true,
-	// 			text: (ctx: any) => ctx.scale.axis + ' axis',
-	// 		},
-	// 	},
-	// }
-
 	const optionsTest2: ChartOptions<'line'> = {
 		responsive: true,
+		// hover: {
+		// 	mode: 'x',
+		// 	intersect: true,
+		// },
 		plugins: {
 			zoom: {
 				zoom: {
@@ -106,8 +76,12 @@ const Histogram = () => {
 					mode: 'xy',
 				},
 				limits: {
-					//
 					x: {
+						min: new Date('2000-04-15 16:00').valueOf(),
+						max: new Date().valueOf(),
+						minRange: 3600000,
+					},
+					x1: {
 						min: new Date('2000-04-15 16:00').valueOf(),
 						max: new Date().valueOf(),
 						minRange: 3600000,
@@ -122,91 +96,67 @@ const Histogram = () => {
 		},
 		scales: {
 			y: {
-				position: 'left',
+				position: 'right',
 				ticks: {
-					callback: (val: any, index: any, ticks: any) => {
+					callback: (val: number | string, index: number, ticks: unknown[]) => {
 						//yAxis level
-						return index === 0 || index === ticks.length - 1 ? null : val
+						if (Math.floor(+val) === val) {
+							return val
+						}
 					},
 				},
 				grid: {
 					color: 'none',
-					display: false,
+					display: true,
 				},
-				// grid: {
-				// 	borderColor: 'blue',
-				// 	color: 'rgba( 0, 0, 0, 0.1)',
-				// },
 				title: {
 					display: true,
 					// text: (ctx: any) => ctx.scale.axis + ' axis',
 					text: 'yAxis',
 				},
-				// ticks: {
-				// 	autoSkip: true,
-				// 	// maxTicksLimit: 10,
-				// 	//   beginAtZero: true,
-				// },
-				// grid: {
-				// 	display: true,
-				// },
-				// gridLines: {
-				//   display: false,
-				// },
+				// beginAtZero: true,
 			},
 			x: {
-				position: 'bottom',
-				type: 'timeseries',
-				ticks: {
-					autoSkip: true,
-					autoSkipPadding: 50,
-					maxRotation: 0,
-					major: {
-						enabled: true,
-					},
-					mirror: true,
-				},
-				time: {
-					displayFormats: {
-						hour: 'HH:mm',
-						minute: 'HH:mm',
-						// second: 'HH:mm:ss',
-					},
-					// unit: 'year',
-					// parser: 'yyyy-MM-dd',
-					// unit: 'month',
-				},
-
-				// grid: {
-				// 	display: false,
-				// },
-				// adapters: {
-				// 	date: { locale: enGB },
-				// },
-				// type: 'time',
-				// adapters: {
-				// 	date: { locale: enGB },
-				// },
-				// time: {
-				// 	parser: 'yyyy-MM-dd',
-				// 	unit: 'month',
-				// },
-				// title: {
-				// 	display: true,
-				// 	text: 'Date xAxes',
-				// },
-			},
-			x1: {
 				position: 'top',
 				type: 'timeseries',
 				ticks: {
+					// callback(tickValue, index, ticks) {
+					// 	console.log('tickValue', tickValue)
+					// 	return null
+					// },
 					autoSkip: true,
 					autoSkipPadding: 50,
 					maxRotation: 0,
 					major: {
 						enabled: true,
 					},
-					mirror: true,
+				},
+				time: {
+					displayFormats: {
+						hour: 'HH:mm',
+						minute: 'HH:mm',
+						// second: 'HH:mm:ss',
+					},
+					// unit: 'hour',
+					// parser: 'yyyy-MM-dd',
+					// unit: 'minute',
+				},
+
+				grid: {
+					display: true,
+				},
+			},
+			x1: {
+				position: 'bottom',
+				type: 'timeseries',
+				ticks: {
+					autoSkip: false,
+					autoSkipPadding: 50,
+					maxRotation: 0,
+					major: {
+						enabled: true,
+					},
+					// mirror: true,
 				},
 				time: {
 					displayFormats: {
@@ -216,30 +166,32 @@ const Histogram = () => {
 					},
 					// unit: 'year',
 					// parser: 'yyyy-MM-dd',
-					// unit: 'month',
+					// unit: 'minute',
 				},
-
-				// grid: {
-				// 	display: false,
-				// },
-				// adapters: {
-				// 	date: { locale: enGB },
-				// },
-				// type: 'time',
-				// adapters: {
-				// 	date: { locale: enGB },
-				// },
-				// time: {
-				// 	parser: 'yyyy-MM-dd',
-				// 	unit: 'month',
-				// },
-				// title: {
-				// 	display: true,
-				// 	text: 'Date xAxes',
-				// },
+				grid: {
+					display: true,
+				},
 			},
 		},
 	}
+	const dateTestObj = [
+		{
+			x: new Date('2020-01-11').valueOf(),
+			y: 1,
+		},
+		{
+			x: new Date('2020-02-15').valueOf(),
+			y: 2,
+		},
+		{
+			x: new Date('2021-04-11').valueOf(),
+			y: 3,
+		},
+		{
+			x: new Date('2021-06-23').valueOf(),
+			y: 5,
+		},
+	]
 
 	const data: ChartData<'line'> = {
 		// x-axis label values
@@ -256,25 +208,27 @@ const Histogram = () => {
 		// ],
 		datasets: [
 			{
+				type: 'line',
 				label: '# of Calories Lost',
 				// y-axis data plotting values
-				data: funcClosure()(),
-				fill: false,
-				borderWidth: 4,
-				backgroundColor: 'rgb(255, 99, 132)',
-				borderColor: 'green',
-				//   responsive:true
+
+				data: dateTestObj /**dateTestObj */,
+
+				// fill: false,
+				// borderWidth: 4,
+				// backgroundColor: 'rgb(255, 99, 132)',
+				// borderColor: 'green',
 			},
-			{
-				label: 'First dataset',
-				data: funcClosure()(),
-				fill: true,
-				backgroundColor: 'rgba(75,192,192,0.2)',
-				borderColor: 'rgba(75,192,192,1)',
-			},
+			// {
+			// 	label: 'First dataset',
+			// 	data: ,
+			// 	fill: true,
+			// 	backgroundColor: 'rgba(75,192,192,0.2)',
+			// 	borderColor: 'rgba(75,192,192,1)',
+			// },
 		],
 	}
-	console.log('RENDER')
+	// console.log('RENDER')
 	return (
 		<div>
 			<Line
