@@ -20,7 +20,8 @@ import { enGB } from 'date-fns/locale'
 // import 'chartjs-plugin-zoom'
 
 import zoomPlugin from 'chartjs-plugin-zoom'
-import 'chartjs-adapter-date-fns'
+// import 'chartjs-adapter-date-fns'
+import 'chartjs-adapter-luxon'
 
 ChartJS.register(
 	TimeScale,
@@ -66,7 +67,7 @@ const Histogram = () => {
 						enabled: true,
 					},
 					pinch: {
-						enabled: true,
+						// enabled: true,
 					},
 
 					mode: 'xy',
@@ -77,12 +78,12 @@ const Histogram = () => {
 				},
 				limits: {
 					x: {
-						min: new Date('2000-04-15 16:00').valueOf(),
+						min: new Date('2000-04-15').valueOf(),
 						max: new Date().valueOf(),
 						minRange: 3600000,
 					},
 					x1: {
-						min: new Date('2000-04-15 16:00').valueOf(),
+						min: new Date('2000-04-15').valueOf(),
 						max: new Date().valueOf(),
 						minRange: 3600000,
 					},
@@ -117,16 +118,32 @@ const Histogram = () => {
 				// beginAtZero: true,
 			},
 			x: {
+				// offsetAfterAutoskip: true,
+				// offset: true,
+				// bounds: 'data',
+				adapters: {
+					date: {
+						locale: 'en-emodeng',
+						minUnit: 'minute',
+					},
+				},
+				// suggestedMin: '2022',
 				position: 'top',
-				type: 'timeseries',
+				type: 'time',
 				ticks: {
+					// stepSize: 10,
+					// maxTicksLimit: ,
+					source: 'auto',
+					// maxTicksLimit: 10,
 					// callback(tickValue, index, ticks) {
-					// 	console.log('tickValue', tickValue)
-					// 	return null
+					// 	console.log('ticks', ticks)
+					// 	return tickValue
 					// },
 					autoSkip: true,
 					autoSkipPadding: 50,
 					maxRotation: 0,
+					// sampleSize: 100,
+					// stepSize: 10,
 					major: {
 						enabled: true,
 					},
@@ -142,54 +159,118 @@ const Histogram = () => {
 					// unit: 'minute',
 				},
 
-				grid: {
-					display: true,
-				},
+				grid: { display: true },
 			},
-			x1: {
-				position: 'bottom',
-				type: 'timeseries',
-				ticks: {
-					autoSkip: false,
-					autoSkipPadding: 50,
-					maxRotation: 0,
-					major: {
-						enabled: true,
-					},
-					// mirror: true,
-				},
-				time: {
-					displayFormats: {
-						hour: 'HH:mm',
-						minute: 'HH:mm',
-						// second: 'HH:mm:ss',
-					},
-					// unit: 'year',
-					// parser: 'yyyy-MM-dd',
-					// unit: 'minute',
-				},
-				grid: {
-					display: true,
-				},
-			},
+			// x1: {
+			// 	adapters: {
+			// 		date: {
+			// 			locale: 'en-emodeng',
+			// 			minUnit: 'minute',
+			// 		},
+			// 	},
+
+			// 	position: 'bottom',
+			// 	type: 'time',
+			// 	ticks: {
+			// 		source: 'auto',
+
+			// 		autoSkip: true,
+			// 		autoSkipPadding: 50,
+			// 		maxRotation: 0,
+
+			// 		major: {
+			// 			enabled: true,
+			// 		},
+			// 	},
+			// 	time: {
+			// 		displayFormats: {
+			// 			hour: 'HH:mm',
+			// 			minute: 'HH:mm',
+			// 			// second: 'HH:mm:ss',
+			// 		},
+			// 	},
+
+			// 	grid: { display: false },
+			// },
 		},
 	}
 	const dateTestObj = [
 		{
-			x: new Date('2020-01-11').valueOf(),
+			x: new Date('2020-01-11T13:30:00').valueOf(),
 			y: 1,
 		},
 		{
-			x: new Date('2020-02-15').valueOf(),
+			x: new Date('2020-01-11T15:30:00').valueOf(),
+			y: 1.2,
+		},
+		{
+			x: new Date('2020-02-14T04:30:00').valueOf(),
 			y: 2,
 		},
 		{
-			x: new Date('2021-04-11').valueOf(),
+			x: new Date('2021-04-02T22:14:00').valueOf(),
 			y: 3,
 		},
 		{
-			x: new Date('2021-06-23').valueOf(),
+			x: new Date('2021-05-02T10:14:00').valueOf(),
+			y: 4,
+		},
+		{
+			x: new Date('2021-06-23T07:30:00').valueOf(),
 			y: 5,
+		},
+	]
+	const dateTestObj2 = [
+		{
+			x: new Date('2019-01-11T13:30:00').valueOf(),
+			y: 1,
+		},
+		{
+			x: new Date('2019-02-14T04:30:00').valueOf(),
+			y: 2,
+		},
+		{
+			x: new Date('2019-04-02T22:14:00').valueOf(),
+			y: 3,
+		},
+		{
+			x: new Date('2019-06-23T07:30:00').valueOf(),
+			y: 5,
+		},
+	]
+
+	const dateTestObj3 = [
+		{
+			x: new Date('2020-03-02T04:30:00').valueOf(),
+			y: 6,
+		},
+		{
+			x: new Date('2020-03-03T11:30:00').valueOf(),
+			y: 6.1,
+		},
+		{
+			x: new Date('2020-03-05T19:30:00').valueOf(),
+			y: 6.2,
+		},
+		{
+			x: new Date('2020-03-06T10:30:00').valueOf(),
+			y: 6.3,
+		},
+		{
+			x: new Date('2020-03-06T11:30:00').valueOf(),
+			y: 6.3,
+		},
+		{
+			x: new Date('2020-03-06T12:30:00').valueOf(),
+			y: 6.3,
+		},
+		{
+			x: new Date('2020-03-06T13:30:00').valueOf(),
+			y: 6.3,
+		},
+		{
+			x: new Date('2020-03-09T22:30:00').valueOf(),
+			y: 6,
 		},
 	]
 
@@ -206,6 +287,7 @@ const Histogram = () => {
 		// 	'Monday',
 		// 	'Tuesday',
 		// ],
+
 		datasets: [
 			{
 				type: 'line',
@@ -213,19 +295,37 @@ const Histogram = () => {
 				// y-axis data plotting values
 
 				data: dateTestObj /**dateTestObj */,
-
+				// xAxisID: 'top-x-axis',
+				// indexAxis: 'x',
 				// fill: false,
 				// borderWidth: 4,
 				// backgroundColor: 'rgb(255, 99, 132)',
-				// borderColor: 'green',
+				borderColor: 'green',
+				borderDash: [5, 5],
+				// indexAxis: 'x',
 			},
-			// {
-			// 	label: 'First dataset',
-			// 	data: ,
-			// 	fill: true,
-			// 	backgroundColor: 'rgba(75,192,192,0.2)',
-			// 	borderColor: 'rgba(75,192,192,1)',
-			// },
+			{
+				type: 'line',
+
+				label: 'First dataset',
+				data: dateTestObj2,
+				// indexAxis: '7',
+
+				// fill: true,
+				// backgroundColor: 'rgba(75,192,192,0.2)',
+				borderColor: 'rgba(75,192,192,1)',
+			},
+			{
+				type: 'line',
+
+				label: 'First dataset',
+				data: dateTestObj3,
+				// indexAxis: '7',
+
+				// fill: true,
+				// backgroundColor: 'rgba(75,192,192,0.2)',
+				borderColor: 'red',
+			},
 		],
 	}
 	// console.log('RENDER')
