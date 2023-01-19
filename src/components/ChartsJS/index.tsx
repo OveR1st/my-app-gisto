@@ -59,7 +59,17 @@ const Histogram = () => {
 		// 	mode: 'x',
 		// 	intersect: true,
 		// },
+		// spanGaps: true,
+		// animation: false,
+
 		plugins: {
+			// legend: {
+			// 	display: true,
+			// 	labels: {
+			// 		// color: 'red',
+
+			// 	},
+			// },
 			zoom: {
 				zoom: {
 					// zoom options and/or events
@@ -78,12 +88,12 @@ const Histogram = () => {
 				},
 				limits: {
 					x: {
-						min: new Date('2000-04-15').valueOf(),
+						min: new Date('2001-04-15').valueOf(),
 						max: new Date().valueOf(),
 						minRange: 3600000,
 					},
 					x1: {
-						min: new Date('2000-04-15').valueOf(),
+						min: new Date('2001-04-15').valueOf(),
 						max: new Date().valueOf(),
 						minRange: 3600000,
 					},
@@ -99,8 +109,10 @@ const Histogram = () => {
 			y: {
 				position: 'right',
 				ticks: {
+					// mirror: true,
 					callback: (val: number | string, index: number, ticks: unknown[]) => {
 						//yAxis level
+
 						if (Math.floor(+val) === val) {
 							return val
 						}
@@ -132,31 +144,36 @@ const Histogram = () => {
 				type: 'time',
 				ticks: {
 					// stepSize: 10,
-					// maxTicksLimit: ,
-					source: 'auto',
+					maxTicksLimit: 10,
+
+					// source: 'labels',
 					// maxTicksLimit: 10,
 					// callback(tickValue, index, ticks) {
+					// 	console.log('tickValue', tickValue)
+					// 	console.log('index', index)
 					// 	console.log('ticks', ticks)
 					// 	return tickValue
 					// },
 					autoSkip: true,
 					autoSkipPadding: 50,
 					maxRotation: 0,
-					// sampleSize: 100,
+					sampleSize: 0,
 					// stepSize: 10,
 					major: {
 						enabled: true,
 					},
 				},
 				time: {
+					// isoWeekday: true,
 					displayFormats: {
+						// day: 'DD',
 						hour: 'HH:mm',
 						minute: 'HH:mm',
-						// second: 'HH:mm:ss',
+						second: 'HH:mm:ss',
 					},
 					// unit: 'hour',
 					// parser: 'yyyy-MM-dd',
-					// unit: 'minute',
+					// unit: 'year÷',
 				},
 
 				grid: { display: true },
@@ -194,6 +211,7 @@ const Histogram = () => {
 			// },
 		},
 	}
+
 	const dateTestObj = [
 		{
 			x: new Date('2020-01-11T13:30:00').valueOf(),
@@ -303,6 +321,10 @@ const Histogram = () => {
 				borderColor: 'green',
 				borderDash: [5, 5],
 				// indexAxis: 'x',
+				parsing: false,
+				normalized: true,
+				indexAxis: 'x',
+				// showLine: false,
 			},
 			{
 				type: 'line',
@@ -314,6 +336,9 @@ const Histogram = () => {
 				// fill: true,
 				// backgroundColor: 'rgba(75,192,192,0.2)',
 				borderColor: 'rgba(75,192,192,1)',
+				parsing: false,
+				normalized: true,
+				indexAxis: 'x',
 			},
 			{
 				type: 'line',
@@ -325,6 +350,15 @@ const Histogram = () => {
 				// fill: true,
 				// backgroundColor: 'rgba(75,192,192,0.2)',
 				borderColor: 'red',
+				borderWidth: 1,
+				parsing: false,
+				normalized: true,
+				indexAxis: 'x',
+				// stepped(ctx, options) {
+				// 	console.log('options', options)
+				// 	console.log('ctx', ctx)
+				// 	return undefined
+				// },
 			},
 		],
 	}
